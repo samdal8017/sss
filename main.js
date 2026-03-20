@@ -59,10 +59,9 @@ async function triggerJackpotSequence(count) {
   initialControls.classList.add("hidden");
   resetControls.classList.add("hidden");
   
-  // 로또 기계 애니메이션 HTML 생성
   container.innerHTML = `
     <div class="machine-container">
-      <div class="scanning-text">EXTRACTING WINNING NUMBERS...</div>
+      <div class="scanning-text">최적의 행운 번호를 분석 중입니다...</div>
       <div class="picking-balls">
         <div class="shuffling-ball" id="ball-0">?</div>
         <div class="shuffling-ball" id="ball-1">?</div>
@@ -75,7 +74,6 @@ async function triggerJackpotSequence(count) {
     </div>
   `;
 
-  // 숫자 셔플 애니메이션 실행
   const shuffleInterval = setInterval(() => {
     for(let i=0; i<6; i++) {
       const b = document.getElementById(`ball-${i}`);
@@ -83,8 +81,7 @@ async function triggerJackpotSequence(count) {
     }
   }, 80);
 
-  // 2초 대기 후 실제 결과 렌더링
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 1800));
   
   clearInterval(shuffleInterval);
   renderResults();
@@ -96,9 +93,16 @@ function renderResults() {
   container.innerHTML = "";
 
   const titles = [
-    "THE $10M JACKPOT", "CERTIFIED WINNER", "ULTIMATE FORTUNE",
-    "THE GOLDEN TICKET", "WEALTH ACCELERATOR", "JACKPOT GENESIS",
-    "VICTORY LEGACY", "SUPREME RICHES", "GLORY GUARDIAN", "FORTUNE MASTER"
+    "역대급 100억 당첨 번호",
+    "인증된 행운의 세트",
+    "궁극의 황금 티켓",
+    "부의 가속화 번호",
+    "압도적 승리의 예감",
+    "잭팟의 시작점",
+    "전설이 될 우승 번호",
+    "최상의 부귀영화 세트",
+    "영광의 가디언 번호",
+    "포춘 마스터의 선택"
   ];
 
   for (let i = 0; i < currentSetCount; i++) {
