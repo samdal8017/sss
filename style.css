@@ -112,6 +112,28 @@ button.primary-btn, button.secondary-btn {
   transform: translateY(-3px);
 }
 
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 16px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  box-shadow: 0 8px 20px -4px rgba(245, 158, 11, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: clamp(150px, 40vw, 200px);
+}
+
+.link-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -6px rgba(245, 158, 11, 0.5);
+  filter: brightness(1.1);
+}
+
 .results-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
