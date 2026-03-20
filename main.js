@@ -30,7 +30,7 @@ function getBallColorClass(num) {
   if (num <= 10) return "ball-yellow";
   if (num <= 20) return "ball-blue";
   if (num <= 30) return "ball-red";
-  if (num <= 40) return "ball-gray";
+  if (num <= 40) return "ball-purple";
   return "ball-green";
 }
 
