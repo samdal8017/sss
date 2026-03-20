@@ -208,6 +208,52 @@ button:hover, .link-btn:hover {
 .history-date { font-size: 0.85rem; color: var(--subtitle-color); }
 .ball-container.mini .lotto-ball.mini { width: 30px; height: 30px; font-size: 0.8rem; }
 
+/* Prizes Section */
+.prizes-container {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+}
+
+.prizes-container h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--subtitle-color);
+}
+
+.prize-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.prize-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.prize-item:last-child { border-bottom: none; }
+
+.prize-draw {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.prize-amount {
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--luxury-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Ball Gradients */
 .ball-yellow { background: radial-gradient(circle at 35% 35%, #ffdb4d, #f59e0b); }
 .ball-blue { background: radial-gradient(circle at 35% 35%, #60a5fa, #1d4ed8); }
