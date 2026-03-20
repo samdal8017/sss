@@ -34,11 +34,21 @@ function getBallColorClass(num) {
   return "ball-green";
 }
 
-// 자동 시간 테마 설정 (7 PM ~ 7 AM 다크모드)
+// 자동 시간 테마 설정
 function applyTimeTheme() {
   const hour = new Date().getHours();
   const isNight = hour >= 19 || hour < 7;
   document.body.setAttribute('data-theme', isNight ? 'dark' : 'light');
+}
+
+function showInitialMenu() {
+  const container = document.getElementById("result");
+  const initialControls = document.getElementById("initialControls");
+  const resetControls = document.getElementById("resetControls");
+  
+  container.innerHTML = "";
+  initialControls.classList.remove("hidden");
+  resetControls.classList.add("hidden");
 }
 
 async function triggerJackpotSequence(count) {
@@ -47,19 +57,19 @@ async function triggerJackpotSequence(count) {
   const initialControls = document.getElementById("initialControls");
   const resetControls = document.getElementById("resetControls");
   
-  // 상태 변경
+  // 모든 버튼 숨기기
   initialControls.classList.add("hidden");
   resetControls.classList.add("hidden");
+  
   container.innerHTML = `
     <div class="jackpot-overlay">
       <div class="scanning-text">ANALYZING HIGH-STAKES DATA...</div>
-      <div class="jackpot-hype">THIS IS THE $10,000,000 WINNER</div>
       <div class="loading-bar"><div class="loading-progress"></div></div>
     </div>
   `;
 
-  // 애니메이션 지연 (2초)
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  // 애니메이션 지연
+  await new Promise(resolve => setTimeout(resolve, 1500));
   
   renderResults();
   resetControls.classList.remove("hidden");
@@ -110,11 +120,9 @@ function renderResults() {
 }
 
 document.getElementById("resetBtn").addEventListener("click", () => {
-  // 다시 뽑기 누르면 다시 5/10 선택 화면으로 가거나 바로 현재 개수로 다시 뽑기 가능
-  // 여기서는 현재 개수(currentSetCount)로 바로 애니메이션 실행
   triggerJackpotSequence();
 });
 
 // 초기 실행
 applyTimeTheme();
-// 처음엔 결과를 보여주지 않고 빈 상태로 대기 (사용자가 선택하도록)
+showInitialMenu();
