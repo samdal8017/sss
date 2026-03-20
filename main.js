@@ -1,6 +1,7 @@
 const MAX = 45;
 const PICK = 6;
 let currentSetCount = 5;
+let history = JSON.parse(localStorage.getItem('lottoHistory')) || [];
 
 // 가상의 역대 당첨 데이터 가중치 (빈도 분석 시뮬레이션)
 const historicalWeights = Array(MAX + 1).fill(1).map((w, i) => {
@@ -58,6 +59,7 @@ function showInitialMenu() {
   container.innerHTML = "";
   initialControls.classList.remove("hidden");
   resetControls.classList.add("hidden");
+  renderHistory();
 }
 
 async function triggerJackpotSequence(count) {
@@ -65,14 +67,16 @@ async function triggerJackpotSequence(count) {
   const container = document.getElementById("result");
   const initialControls = document.getElementById("initialControls");
   const resetControls = document.getElementById("resetControls");
+  const historyContainer = document.getElementById("historySection");
   
   initialControls.classList.add("hidden");
   resetControls.classList.add("hidden");
+  if(historyContainer) historyContainer.classList.add("hidden");
   
   container.innerHTML = `
     <div class="spectacular-machine">
       <div class="machine-glow"></div>
-      <div id="statusText" class="scanning-text-v2">역대 데이터 기반 핵심 번호 분석 중...</div>
+      <div id="statusText" class="scanning-text-v2">역대 데이터 정밀 분석 중...</div>
       <div class="orbit-machine">
         <div class="shuffling-ball orbit-1" id="ball-0">?</div>
         <div class="shuffling-ball orbit-2" id="ball-1">?</div>
@@ -82,12 +86,12 @@ async function triggerJackpotSequence(count) {
         <div class="shuffling-ball bonus-ball-shimmer hidden" id="ball-5">?</div>
       </div>
       <div class="luxury-progress-container">
-        <div class="luxury-progress-bar extended"></div>
+        <div class="luxury-progress-bar fast"></div>
       </div>
     </div>
   `;
 
-  // 1단계: 5개 번호 셔플 (0~4초)
+  // 1단계: 5개 번호 셔플 (0~2.4초)
   const shuffleInterval = setInterval(() => {
     for(let i=0; i<5; i++) {
       const b = document.getElementById(`ball-${i}`);
@@ -95,43 +99,45 @@ async function triggerJackpotSequence(count) {
     }
   }, 60);
 
-  await new Promise(resolve => setTimeout(resolve, 4000));
+  await new Promise(resolve => setTimeout(resolve, 2400));
   
-  // 2단계: 보너스 번호 대기 (4~5초)
+  // 2단계: 보너스 번호 확정 (2.4~3초)
   const statusText = document.getElementById("statusText");
   const bonusBall = document.getElementById("ball-5");
-  if(statusText) statusText.innerText = "최종 잭팟 보너스 번호 확정 중!!!";
+  if(statusText) statusText.innerText = "잭팟 번호 확정 중!";
   if(bonusBall) {
     bonusBall.classList.remove("hidden");
     const bonusInterval = setInterval(() => {
       bonusBall.innerText = Math.floor(Math.random() * 45) + 1;
     }, 50);
-    setTimeout(() => clearInterval(bonusInterval), 1000);
+    setTimeout(() => clearInterval(bonusInterval), 600);
   }
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 600));
   
   clearInterval(shuffleInterval);
   container.classList.add("reveal-flash");
   setTimeout(() => {
     container.classList.remove("reveal-flash");
-    renderResults();
+    saveAndRenderResults();
     resetControls.classList.remove("hidden");
   }, 200);
 }
 
-function renderResults() {
+function saveAndRenderResults() {
   const container = document.getElementById("result");
   container.innerHTML = "";
+  const allSets = [];
 
   const titles = [
-    "데이터가 증명한 100억 번호", "통계 기반 최적의 행운 세트", "검증된 AI 당첨 예측",
-    "황금 비율의 퍼펙트 티켓", "역대 빈도 가중치 분석 결과", "잭팟 매커니즘 정밀 추출",
-    "빅데이터 기반 우승 번호", "패턴 분석 최상위 추천 세트", "영광의 당첨 확률 가디언", "포춘 마스터의 정밀 예측"
+    "데이터 증명 100억 번호", "통계 기반 최적 세트", "검증된 AI 당첨 예측",
+    "황금 비율 퍼펙트 티켓", "역대 빈도 가중치 분석", "잭팟 매커니즘 정밀 추출",
+    "빅데이터 기반 우승 번호", "패턴 분석 상위 추천", "영광의 당첨 확률", "포춘 마스터 정밀 예측"
   ];
 
   for (let i = 0; i < currentSetCount; i++) {
     const numbers = generateSmartSet();
+    allSets.push(numbers);
     const card = document.createElement("div");
     card.className = "set-card";
     card.style.animationDelay = `${i * 0.1}s`;
@@ -155,6 +161,40 @@ function renderResults() {
     card.appendChild(ballContainer);
     container.appendChild(card);
   }
+
+  // 히스토리 저장 (최신 결과 1개 세트만 저장하거나 전체 저장 가능 - 여기서는 첫 세트만 저장)
+  history.unshift({
+    date: new Date().toLocaleString(),
+    numbers: allSets[0] 
+  });
+  if(history.length > 5) history.pop();
+  localStorage.setItem('lottoHistory', JSON.stringify(history));
+}
+
+function renderHistory() {
+  let section = document.getElementById("historySection");
+  if(!section) return;
+  
+  if(history.length === 0) {
+    section.classList.add("hidden");
+    return;
+  }
+  
+  section.classList.remove("hidden");
+  const list = document.getElementById("historyList");
+  list.innerHTML = "";
+  
+  history.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.innerHTML = `
+      <span class="history-date">${item.date}</span>
+      <div class="ball-container mini">
+        ${item.numbers.map(n => `<span class="lotto-ball mini ${getBallColorClass(n)}">${n}</span>`).join('')}
+      </div>
+    `;
+    list.appendChild(div);
+  });
 }
 
 document.getElementById("resetBtn").addEventListener("click", () => {
