@@ -2,95 +2,26 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>로또 번호 생성기</title>
-  <style>
-    body {
-      font-family: 'Arial';
-      text-align: center;
-      background: #0f172a;
-      color: #fff;
-    }
-    h1 {
-      color: #38bdf8;
-    }
-    button {
-      padding: 12px 25px;
-      font-size: 18px;
-      margin: 10px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background: #22c55e;
-      color: white;
-    }
-    .set {
-      margin: 10px;
-      font-size: 22px;
-      letter-spacing: 5px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 프리미엄 로또 번호 예측</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🎯 로또 번호 예측 생성기</h1>
+  <main class="container">
+    <header>
+      <h1>🎯 로또 예측 생성기</h1>
+      <p class="subtitle">AI 기반 가중치 알고리즘으로 분석된 행운의 번호</p>
+    </header>
 
-<button onclick="generateAll()">5개 번호 생성</button>
-<button onclick="generateAll()">🔁 다시 뽑기</button>
+    <div class="controls">
+      <button id="generateBtn" class="primary-btn">5개 번호 생성</button>
+      <button id="resetBtn" class="secondary-btn">🔁 다시 뽑기</button>
+    </div>
 
-<div id="result"></div>
+    <section id="result" class="results-grid"></section>
+  </main>
 
-<script>
-const MAX = 45;
-const PICK = 6;
-const SET_COUNT = 5;
-
-// 가중치 배열 (간단한 확률 기반)
-let freq = Array(MAX + 1).fill(1);
-
-// 랜덤으로 가중치 증가 (가짜 통계)
-for (let i = 0; i < 1000; i++) {
-  let n = Math.floor(Math.random() * MAX) + 1;
-  freq[n]++;
-}
-
-// 가중 랜덤 함수
-function weightedPick() {
-  let total = freq.reduce((a, b) => a + b, 0);
-  let r = Math.random() * total;
-
-  for (let i = 1; i <= MAX; i++) {
-    r -= freq[i];
-    if (r <= 0) return i;
-  }
-}
-
-// 1세트 생성
-function generateSet() {
-  let set = new Set();
-
-  while (set.size < PICK) {
-    set.add(weightedPick());
-  }
-
-  return Array.from(set).sort((a, b) => a - b);
-}
-
-// 5세트 생성
-function generateAll() {
-  let container = document.getElementById("result");
-  container.innerHTML = "";
-
-  for (let i = 0; i < SET_COUNT; i++) {
-    let numbers = generateSet();
-
-    let div = document.createElement("div");
-    div.className = "set";
-    div.innerText = `세트 ${i + 1} : ${numbers.join("  ")}`;
-
-    container.appendChild(div);
-  }
-}
-</script>
-
+  <script src="main.js"></script>
 </body>
 </html>
