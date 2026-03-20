@@ -34,7 +34,6 @@ function getBallColorClass(num) {
   return "ball-green";
 }
 
-// 자동 시간 테마 설정
 function applyTimeTheme() {
   const hour = new Date().getHours();
   const isNight = hour >= 19 || hour < 7;
@@ -57,20 +56,37 @@ async function triggerJackpotSequence(count) {
   const initialControls = document.getElementById("initialControls");
   const resetControls = document.getElementById("resetControls");
   
-  // 모든 버튼 숨기기
   initialControls.classList.add("hidden");
   resetControls.classList.add("hidden");
   
+  // 로또 기계 애니메이션 HTML 생성
   container.innerHTML = `
-    <div class="jackpot-overlay">
-      <div class="scanning-text">ANALYZING HIGH-STAKES DATA...</div>
+    <div class="machine-container">
+      <div class="scanning-text">EXTRACTING WINNING NUMBERS...</div>
+      <div class="picking-balls">
+        <div class="shuffling-ball" id="ball-0">?</div>
+        <div class="shuffling-ball" id="ball-1">?</div>
+        <div class="shuffling-ball" id="ball-2">?</div>
+        <div class="shuffling-ball" id="ball-3">?</div>
+        <div class="shuffling-ball" id="ball-4">?</div>
+        <div class="shuffling-ball" id="ball-5">?</div>
+      </div>
       <div class="loading-bar"><div class="loading-progress"></div></div>
     </div>
   `;
 
-  // 애니메이션 지연
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  // 숫자 셔플 애니메이션 실행
+  const shuffleInterval = setInterval(() => {
+    for(let i=0; i<6; i++) {
+      const b = document.getElementById(`ball-${i}`);
+      if(b) b.innerText = Math.floor(Math.random() * 45) + 1;
+    }
+  }, 80);
+
+  // 2초 대기 후 실제 결과 렌더링
+  await new Promise(resolve => setTimeout(resolve, 2000));
   
+  clearInterval(shuffleInterval);
   renderResults();
   resetControls.classList.remove("hidden");
 }
@@ -80,16 +96,9 @@ function renderResults() {
   container.innerHTML = "";
 
   const titles = [
-    "THE $10M JACKPOT",
-    "CERTIFIED WINNER",
-    "ULTIMATE FORTUNE",
-    "THE GOLDEN TICKET",
-    "WEALTH ACCELERATOR",
-    "JACKPOT GENESIS",
-    "VICTORY LEGACY",
-    "SUPREME RICHES",
-    "GLORY GUARDIAN",
-    "FORTUNE MASTER"
+    "THE $10M JACKPOT", "CERTIFIED WINNER", "ULTIMATE FORTUNE",
+    "THE GOLDEN TICKET", "WEALTH ACCELERATOR", "JACKPOT GENESIS",
+    "VICTORY LEGACY", "SUPREME RICHES", "GLORY GUARDIAN", "FORTUNE MASTER"
   ];
 
   for (let i = 0; i < currentSetCount; i++) {
@@ -123,6 +132,5 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   triggerJackpotSequence();
 });
 
-// 초기 실행
 applyTimeTheme();
 showInitialMenu();
