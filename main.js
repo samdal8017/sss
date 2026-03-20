@@ -4,7 +4,6 @@ let currentSetCount = 5;
 
 // 가상의 역대 당첨 데이터 가중치 (빈도 분석 시뮬레이션)
 const historicalWeights = Array(MAX + 1).fill(1).map((w, i) => {
-  // 실제 로또 통계에서 자주 나오는 번호들에 약간의 가중치 부여 (시뮬레이션)
   const hotNumbers = [1, 5, 12, 18, 27, 34, 43, 45, 10, 20];
   return hotNumbers.includes(i) ? 1.5 : 1.0;
 });
@@ -18,7 +17,6 @@ function weightedPick(weights) {
   }
 }
 
-// 스마트 예측 알고리즘: 실제 당첨 패턴 분석 및 필터링
 function generateSmartSet() {
   let attempts = 0;
   while (attempts < 100) {
@@ -28,29 +26,14 @@ function generateSmartSet() {
       set.add(weightedPick(historicalWeights));
     }
     const arr = Array.from(set).sort((a, b) => a - b);
-    
-    // 1. 합계 분석 (보통 100~175 사이에서 70% 이상 발생)
     const sum = arr.reduce((a, b) => a + b, 0);
     if (sum < 100 || sum > 180) continue;
-
-    // 2. 홀짝 밸런스 (3:3, 2:4, 4:2 비율 최적화)
     const oddCount = arr.filter(n => n % 2 !== 0).length;
     if (oddCount < 2 || oddCount > 4) continue;
-
-    // 3. 고저 밸런스 (1~22: 저, 23~45: 고)
     const lowCount = arr.filter(n => n <= 22).length;
     if (lowCount < 2 || lowCount > 4) continue;
-
-    // 4. 연속 번호 제한 (3개 이상 연속 배제)
-    let consecutive = false;
-    for(let i=0; i<arr.length-2; i++) {
-      if(arr[i]+1 === arr[i+1] && arr[i+1]+1 === arr[i+2]) consecutive = true;
-    }
-    if (consecutive) continue;
-
     return arr;
   }
-  // 실패 시 기본 세트 반환
   return Array.from({length: PICK}, () => Math.floor(Math.random() * 45) + 1).sort((a, b) => a - b);
 }
 
@@ -72,7 +55,6 @@ function showInitialMenu() {
   const container = document.getElementById("result");
   const initialControls = document.getElementById("initialControls");
   const resetControls = document.getElementById("resetControls");
-  
   container.innerHTML = "";
   initialControls.classList.remove("hidden");
   resetControls.classList.add("hidden");
@@ -90,29 +72,44 @@ async function triggerJackpotSequence(count) {
   container.innerHTML = `
     <div class="spectacular-machine">
       <div class="machine-glow"></div>
-      <div class="scanning-text-v2">역대 당첨 데이터 정밀 분석 중...</div>
+      <div id="statusText" class="scanning-text-v2">역대 데이터 기반 핵심 번호 분석 중...</div>
       <div class="orbit-machine">
         <div class="shuffling-ball orbit-1" id="ball-0">?</div>
         <div class="shuffling-ball orbit-2" id="ball-1">?</div>
         <div class="shuffling-ball orbit-3" id="ball-2">?</div>
         <div class="shuffling-ball orbit-1" id="ball-3">?</div>
         <div class="shuffling-ball orbit-2" id="ball-4">?</div>
-        <div class="shuffling-ball orbit-3" id="ball-5">?</div>
+        <div class="shuffling-ball bonus-ball-shimmer hidden" id="ball-5">?</div>
       </div>
       <div class="luxury-progress-container">
-        <div class="luxury-progress-bar"></div>
+        <div class="luxury-progress-bar extended"></div>
       </div>
     </div>
   `;
 
+  // 1단계: 5개 번호 셔플 (0~4초)
   const shuffleInterval = setInterval(() => {
-    for(let i=0; i<6; i++) {
+    for(let i=0; i<5; i++) {
       const b = document.getElementById(`ball-${i}`);
       if(b) b.innerText = Math.floor(Math.random() * 45) + 1;
     }
   }, 60);
 
-  await new Promise(resolve => setTimeout(resolve, 3000));
+  await new Promise(resolve => setTimeout(resolve, 4000));
+  
+  // 2단계: 보너스 번호 대기 (4~5초)
+  const statusText = document.getElementById("statusText");
+  const bonusBall = document.getElementById("ball-5");
+  if(statusText) statusText.innerText = "최종 잭팟 보너스 번호 확정 중!!!";
+  if(bonusBall) {
+    bonusBall.classList.remove("hidden");
+    const bonusInterval = setInterval(() => {
+      bonusBall.innerText = Math.floor(Math.random() * 45) + 1;
+    }, 50);
+    setTimeout(() => clearInterval(bonusInterval), 1000);
+  }
+
+  await new Promise(resolve => setTimeout(resolve, 1000));
   
   clearInterval(shuffleInterval);
   container.classList.add("reveal-flash");
@@ -134,7 +131,7 @@ function renderResults() {
   ];
 
   for (let i = 0; i < currentSetCount; i++) {
-    const numbers = generateSmartSet(); // 스마트 엔진 사용
+    const numbers = generateSmartSet();
     const card = document.createElement("div");
     card.className = "set-card";
     card.style.animationDelay = `${i * 0.1}s`;

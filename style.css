@@ -267,6 +267,29 @@ button:hover, .link-btn:hover {
 .ball-purple { background: radial-gradient(circle at 35% 35%, #c084fc, #7e22ce); }
 .ball-green { background: radial-gradient(circle at 35% 35%, #4ade80, #15803d); }
 
+.luxury-progress-bar.extended {
+  height: 100%;
+  width: 0%;
+  background: var(--luxury-gold);
+  animation: loadProgress 5s linear forwards;
+}
+
+.bonus-ball-shimmer {
+  border: 3px solid #fbbf24 !important;
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.6) !important;
+  animation: bonusPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, goldPulse 1s infinite alternate !important;
+}
+
+@keyframes bonusPop {
+  from { transform: scale(0) rotate(-180deg); opacity: 0; }
+  to { transform: scale(1.2) rotate(0); opacity: 1; }
+}
+
+@keyframes goldPulse {
+  from { box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+  to { box-shadow: 0 0 40px rgba(251, 191, 36, 0.8); }
+}
+
 /* Animations */
 @keyframes orbit1 {
   0% { transform: translate(-80px, 0) scale(1); z-index: 5; }
