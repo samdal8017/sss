@@ -1,3 +1,28 @@
+// 테마 전환 기능
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const body = document.body;
+
+// 로컬 스토리지에서 테마 불러오기
+const currentTheme = localStorage.getItem('theme') || 'dark';
+if (currentTheme === 'light') {
+  body.setAttribute('data-theme', 'light');
+  themeIcon.innerText = '☀️';
+}
+
+themeToggle.addEventListener('click', () => {
+  const isLight = body.getAttribute('data-theme') === 'light';
+  if (isLight) {
+    body.removeAttribute('data-theme');
+    themeIcon.innerText = '🌙';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    body.setAttribute('data-theme', 'light');
+    themeIcon.innerText = '☀️';
+    localStorage.setItem('theme', 'light');
+  }
+});
+
 const MAX = 45;
 const PICK = 6;
 const SET_COUNT = 5;
