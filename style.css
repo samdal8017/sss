@@ -184,7 +184,7 @@ button:hover, .link-btn:hover {
 .set-header { font-size: 0.85rem; font-weight: 900; color: var(--subtitle-color); text-transform: uppercase; letter-spacing: 0.2em; min-width: 180px; text-align: left; }
 
 .ball-container { display: flex; gap: 0.75rem; }
-.ball-container.mini { gap: 0.4rem; }
+.ball-container.mini { gap: clamp(0.25rem, 1.5vw, 0.4rem); }
 
 .lotto-ball {
   width: 44px; height: 44px; border-radius: 50%;
@@ -195,7 +195,9 @@ button:hover, .link-btn:hover {
 }
 
 .lotto-ball.mini {
-  width: 32px; height: 32px; font-size: 0.85rem;
+  width: clamp(28px, 8vw, 32px);
+  height: clamp(28px, 8vw, 32px);
+  font-size: clamp(0.75rem, 2.5vw, 0.85rem);
   box-shadow: inset -2px -2px 5px rgba(0,0,0,0.3), 0 2px 5px rgba(0,0,0,0.1);
 }
 
@@ -223,13 +225,29 @@ button:hover, .link-btn:hover {
 .prize-item-group:last-child { border-bottom: none; padding-bottom: 0; }
 
 .prize-info {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
 }
 
-.prize-draw { font-size: 0.95rem; color: var(--text-color); font-weight: 600; }
+.prize-draw {
+  font-size: clamp(0.75rem, 3.5vw, 0.95rem);
+  color: var(--text-color);
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .prize-amount {
-  font-size: 1.1rem; font-weight: 800;
-  background: var(--luxury-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  font-size: clamp(0.85rem, 4vw, 1.1rem);
+  font-weight: 800;
+  background: var(--luxury-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Ball Colors */
@@ -257,7 +275,9 @@ footer { margin-top: 5rem; padding: 2rem; opacity: 0.7; }
 
 @media (max-width: 768px) {
   .set-card { flex-direction: column; padding: 2rem 1.5rem; gap: 1.5rem; }
-  .prize-info { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  .prizes-container { padding: 1.5rem 1rem; }
+  .prize-item-group { padding-bottom: 1.25rem; }
+  .prize-info { flex-direction: row; justify-content: space-between; align-items: center; }
   .set-header { text-align: center; min-width: auto; }
   .controls { flex-direction: column; }
   button { width: 100%; }
