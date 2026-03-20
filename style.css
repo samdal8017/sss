@@ -28,6 +28,10 @@
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
+.hidden {
+  display: none !important;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-color);
@@ -64,10 +68,11 @@ h1 {
   color: var(--subtitle-color);
   font-size: clamp(0.9rem, 3vw, 1.2rem);
   font-weight: 500;
+  margin-bottom: 2rem;
 }
 
 .controls {
-  margin: 3rem 0;
+  margin-bottom: 3rem;
   display: flex;
   justify-content: center;
   gap: 1.2rem;
@@ -92,14 +97,9 @@ button, .link-btn {
   box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.5);
 }
 
-.primary-btn:hover:not(:disabled) {
+.primary-btn:hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 20px 30px -10px rgba(251, 191, 36, 0.6);
-}
-
-.primary-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .secondary-btn {
@@ -108,9 +108,15 @@ button, .link-btn {
   color: var(--primary-color);
 }
 
-.secondary-btn:hover:not(:disabled) {
+.secondary-btn:hover {
   background: rgba(251, 191, 36, 0.1);
   transform: translateY(-5px);
+}
+
+.link-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
 }
 
 /* Jackpot Sequence Styles */
@@ -211,6 +217,23 @@ button, .link-btn {
 .ball-red { background: radial-gradient(circle at 30% 30%, #f87171, #991b1b); color: white; }
 .ball-gray { background: radial-gradient(circle at 30% 30%, #94a3b8, #334155); color: white; }
 .ball-green { background: radial-gradient(circle at 30% 30%, #4ade80, #166534); color: white; }
+
+/* Footer */
+footer {
+  margin-top: 5rem;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.copyright {
+  color: var(--subtitle-color);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.copyright strong {
+  color: var(--primary-color);
+}
 
 /* Animations */
 @keyframes loadProgress {

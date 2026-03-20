@@ -1,6 +1,6 @@
 const MAX = 45;
 const PICK = 6;
-const SET_COUNT = 5;
+let currentSetCount = 5;
 
 // 가중치 배열
 let freq = Array(MAX + 1).fill(1);
@@ -41,12 +41,15 @@ function applyTimeTheme() {
   document.body.setAttribute('data-theme', isNight ? 'dark' : 'light');
 }
 
-async function triggerJackpotSequence() {
+async function triggerJackpotSequence(count) {
+  if (count) currentSetCount = count;
   const container = document.getElementById("result");
-  const btn = document.getElementById("resetBtn");
+  const initialControls = document.getElementById("initialControls");
+  const resetControls = document.getElementById("resetControls");
   
   // 상태 변경
-  btn.disabled = true;
+  initialControls.classList.add("hidden");
+  resetControls.classList.add("hidden");
   container.innerHTML = `
     <div class="jackpot-overlay">
       <div class="scanning-text">ANALYZING HIGH-STAKES DATA...</div>
@@ -55,11 +58,11 @@ async function triggerJackpotSequence() {
     </div>
   `;
 
-  // 애니메이션 지연 (1.5초)
+  // 애니메이션 지연 (2초)
   await new Promise(resolve => setTimeout(resolve, 2000));
   
   renderResults();
-  btn.disabled = false;
+  resetControls.classList.remove("hidden");
 }
 
 function renderResults() {
@@ -71,10 +74,15 @@ function renderResults() {
     "CERTIFIED WINNER",
     "ULTIMATE FORTUNE",
     "THE GOLDEN TICKET",
-    "WEALTH ACCELERATOR"
+    "WEALTH ACCELERATOR",
+    "JACKPOT GENESIS",
+    "VICTORY LEGACY",
+    "SUPREME RICHES",
+    "GLORY GUARDIAN",
+    "FORTUNE MASTER"
   ];
 
-  for (let i = 0; i < SET_COUNT; i++) {
+  for (let i = 0; i < currentSetCount; i++) {
     const numbers = generateSet();
     const card = document.createElement("div");
     card.className = "set-card";
@@ -82,7 +90,7 @@ function renderResults() {
 
     const header = document.createElement("div");
     header.className = "set-header";
-    header.innerText = titles[i];
+    header.innerText = titles[i % titles.length];
     card.appendChild(header);
 
     const ballContainer = document.createElement("div");
@@ -101,9 +109,12 @@ function renderResults() {
   }
 }
 
-document.getElementById("generateBtn").addEventListener("click", triggerJackpotSequence);
-document.getElementById("resetBtn").addEventListener("click", triggerJackpotSequence);
+document.getElementById("resetBtn").addEventListener("click", () => {
+  // 다시 뽑기 누르면 다시 5/10 선택 화면으로 가거나 바로 현재 개수로 다시 뽑기 가능
+  // 여기서는 현재 개수(currentSetCount)로 바로 애니메이션 실행
+  triggerJackpotSequence();
+});
 
 // 초기 실행
 applyTimeTheme();
-renderResults();
+// 처음엔 결과를 보여주지 않고 빈 상태로 대기 (사용자가 선택하도록)

@@ -3,26 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎯 프리미엄 로또 번호 예측</title>
+  <title>🎯 THE $10M JACKPOT PREDICTOR</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <main class="container">
     <header>
-      <div class="theme-switch-wrapper">
-        <button id="themeToggle" class="theme-toggle-btn">
-          <span id="themeIcon">🌙</span>
-        </button>
-      </div>
-      <h1>🎯 로또 예측 생성기</h1>
-      <p class="subtitle">AI 기반 가중치 알고리즘으로 분석된 행운의 번호</p>
+      <h1>🎯 THE $10M JACKPOT</h1>
+      <p id="mainSubtitle" class="subtitle">Wishing you the ultimate Jackpot! (대박을 기원합니다)</p>
     </header>
 
-    <div class="controls">
-      <button id="generateBtn" class="primary-btn">5개 번호 생성</button>
-      <button id="resetBtn" class="secondary-btn">🔁 다시 뽑기</button>
+    <div id="initialControls" class="controls">
+      <button onclick="triggerJackpotSequence(5)" class="primary-btn">Generate 5 Sets</button>
+      <button onclick="triggerJackpotSequence(10)" class="primary-btn">Generate 10 Sets</button>
       <a href="https://www.dhlottery.co.kr/" target="_blank" class="link-btn">🏆 당첨결과 확인</a>
+    </div>
+
+    <div id="resetControls" class="controls hidden">
+      <button id="resetBtn" class="secondary-btn">🔁 다시 뽑기 (Try Again)</button>
     </div>
 
     <section id="result" class="results-grid"></section>
