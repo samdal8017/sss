@@ -59,18 +59,22 @@ async function triggerJackpotSequence(count) {
   initialControls.classList.add("hidden");
   resetControls.classList.add("hidden");
   
+  // Spectacular 3D Machine UI
   container.innerHTML = `
-    <div class="machine-container">
-      <div class="scanning-text">최적의 행운 번호를 분석 중입니다...</div>
-      <div class="picking-balls">
-        <div class="shuffling-ball" id="ball-0">?</div>
-        <div class="shuffling-ball" id="ball-1">?</div>
-        <div class="shuffling-ball" id="ball-2">?</div>
-        <div class="shuffling-ball" id="ball-3">?</div>
-        <div class="shuffling-ball" id="ball-4">?</div>
-        <div class="shuffling-ball" id="ball-5">?</div>
+    <div class="spectacular-machine">
+      <div class="machine-glow"></div>
+      <div class="scanning-text-v2">ANALYZING DESTINY...</div>
+      <div class="orbit-machine">
+        <div class="shuffling-ball orbit-1" id="ball-0">?</div>
+        <div class="shuffling-ball orbit-2" id="ball-1">?</div>
+        <div class="shuffling-ball orbit-3" id="ball-2">?</div>
+        <div class="shuffling-ball orbit-1" id="ball-3">?</div>
+        <div class="shuffling-ball orbit-2" id="ball-4">?</div>
+        <div class="shuffling-ball orbit-3" id="ball-5">?</div>
       </div>
-      <div class="loading-bar"><div class="loading-progress"></div></div>
+      <div class="luxury-progress-container">
+        <div class="luxury-progress-bar"></div>
+      </div>
     </div>
   `;
 
@@ -79,13 +83,20 @@ async function triggerJackpotSequence(count) {
       const b = document.getElementById(`ball-${i}`);
       if(b) b.innerText = Math.floor(Math.random() * 45) + 1;
     }
-  }, 80);
+  }, 60);
 
-  await new Promise(resolve => setTimeout(resolve, 1800));
+  // 3초 대기 (더욱 화려하고 긴 긴장감)
+  await new Promise(resolve => setTimeout(resolve, 3000));
   
   clearInterval(shuffleInterval);
-  renderResults();
-  resetControls.classList.remove("hidden");
+  
+  // Reveal Flash Effect
+  container.classList.add("reveal-flash");
+  setTimeout(() => {
+    container.classList.remove("reveal-flash");
+    renderResults();
+    resetControls.classList.remove("hidden");
+  }, 200);
 }
 
 function renderResults() {
@@ -93,16 +104,9 @@ function renderResults() {
   container.innerHTML = "";
 
   const titles = [
-    "역대급 100억 당첨 번호",
-    "인증된 행운의 세트",
-    "궁극의 황금 티켓",
-    "부의 가속화 번호",
-    "압도적 승리의 예감",
-    "잭팟의 시작점",
-    "전설이 될 우승 번호",
-    "최상의 부귀영화 세트",
-    "영광의 가디언 번호",
-    "포춘 마스터의 선택"
+    "역대급 100억 당첨 번호", "인증된 행운의 세트", "궁극의 황금 티켓",
+    "부의 가속화 번호", "압도적 승리의 예감", "잭팟의 시작점",
+    "전설이 될 우승 번호", "최상의 부귀영화 세트", "영광의 가디언 번호", "포춘 마스터의 선택"
   ];
 
   for (let i = 0; i < currentSetCount; i++) {
