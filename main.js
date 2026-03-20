@@ -1,28 +1,3 @@
-// 테마 전환 기능
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
-const body = document.body;
-
-// 로컬 스토리지에서 테마 불러오기
-const currentTheme = localStorage.getItem('theme') || 'dark';
-if (currentTheme === 'light') {
-  body.setAttribute('data-theme', 'light');
-  themeIcon.innerText = '☀️';
-}
-
-themeToggle.addEventListener('click', () => {
-  const isLight = body.getAttribute('data-theme') === 'light';
-  if (isLight) {
-    body.removeAttribute('data-theme');
-    themeIcon.innerText = '🌙';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    body.setAttribute('data-theme', 'light');
-    themeIcon.innerText = '☀️';
-    localStorage.setItem('theme', 'light');
-  }
-});
-
 const MAX = 45;
 const PICK = 6;
 const SET_COUNT = 5;
@@ -59,9 +34,45 @@ function getBallColorClass(num) {
   return "ball-green";
 }
 
-function generateAll() {
+// 자동 시간 테마 설정 (7 PM ~ 7 AM 다크모드)
+function applyTimeTheme() {
+  const hour = new Date().getHours();
+  const isNight = hour >= 19 || hour < 7;
+  document.body.setAttribute('data-theme', isNight ? 'dark' : 'light');
+}
+
+async function triggerJackpotSequence() {
+  const container = document.getElementById("result");
+  const btn = document.getElementById("resetBtn");
+  
+  // 상태 변경
+  btn.disabled = true;
+  container.innerHTML = `
+    <div class="jackpot-overlay">
+      <div class="scanning-text">ANALYZING HIGH-STAKES DATA...</div>
+      <div class="jackpot-hype">THIS IS THE $10,000,000 WINNER</div>
+      <div class="loading-bar"><div class="loading-progress"></div></div>
+    </div>
+  `;
+
+  // 애니메이션 지연 (1.5초)
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  renderResults();
+  btn.disabled = false;
+}
+
+function renderResults() {
   const container = document.getElementById("result");
   container.innerHTML = "";
+
+  const titles = [
+    "THE $10M JACKPOT",
+    "CERTIFIED WINNER",
+    "ULTIMATE FORTUNE",
+    "THE GOLDEN TICKET",
+    "WEALTH ACCELERATOR"
+  ];
 
   for (let i = 0; i < SET_COUNT; i++) {
     const numbers = generateSet();
@@ -71,7 +82,7 @@ function generateAll() {
 
     const header = document.createElement("div");
     header.className = "set-header";
-    header.innerText = `LUCKY SET ${i + 1}`;
+    header.innerText = titles[i];
     card.appendChild(header);
 
     const ballContainer = document.createElement("div");
@@ -90,8 +101,9 @@ function generateAll() {
   }
 }
 
-document.getElementById("generateBtn").addEventListener("click", generateAll);
-document.getElementById("resetBtn").addEventListener("click", generateAll);
+document.getElementById("generateBtn").addEventListener("click", triggerJackpotSequence);
+document.getElementById("resetBtn").addEventListener("click", triggerJackpotSequence);
 
 // 초기 실행
-generateAll();
+applyTimeTheme();
+renderResults();
