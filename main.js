@@ -175,7 +175,10 @@ function renderHistory() {
   let section = document.getElementById("historySection");
   if(!section) return;
   
-  if(history.length === 0) {
+  // 유효한 데이터만 필터링 (date와 numbers가 모두 있는 경우만)
+  const validHistory = history.filter(item => item && item.date && Array.isArray(item.numbers));
+  
+  if(validHistory.length === 0) {
     section.classList.add("hidden");
     return;
   }
@@ -184,7 +187,7 @@ function renderHistory() {
   const list = document.getElementById("historyList");
   list.innerHTML = "";
   
-  history.forEach(item => {
+  validHistory.forEach(item => {
     const div = document.createElement("div");
     div.className = "history-item";
     div.innerHTML = `
