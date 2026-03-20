@@ -213,25 +213,29 @@ button:hover, .link-btn:hover {
 }
 
 .lotto-ball {
-  width: 42px;
-  height: 42px;
+  width: clamp(40px, 12vw, 46px);
+  height: clamp(40px, 12vw, 46px);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 4vw, 1.2rem);
   color: #fff;
-  box-shadow: inset -2px -2px 6px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.1);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 
+    inset -3px -3px 8px rgba(0,0,0,0.3),
+    inset 2px 2px 6px rgba(255,255,255,0.4),
+    0 4px 12px rgba(0,0,0,0.15);
   animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* Ball Gradients */
-.ball-yellow { background: radial-gradient(circle at 30% 30%, #fbbf24, #d97706); }
-.ball-blue { background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb); }
-.ball-red { background: radial-gradient(circle at 30% 30%, #f87171, #dc2626); }
-.ball-gray { background: radial-gradient(circle at 30% 30%, #94a3b8, #475569); }
-.ball-green { background: radial-gradient(circle at 30% 30%, #4ade80, #16a34a); }
+/* More Vibrant Ball Gradients for Mobile Visibility */
+.ball-yellow { background: radial-gradient(circle at 35% 35%, #ffdb4d, #f59e0b); }
+.ball-blue { background: radial-gradient(circle at 35% 35%, #60a5fa, #1d4ed8); }
+.ball-red { background: radial-gradient(circle at 35% 35%, #fb7185, #e11d48); }
+.ball-gray { background: radial-gradient(circle at 35% 35%, #cbd5e1, #475569); }
+.ball-green { background: radial-gradient(circle at 35% 35%, #4ade80, #15803d); }
 
 /* Footer */
 footer {
